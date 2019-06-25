@@ -7,6 +7,14 @@ import {
 } from '@expo/vector-icons';
 import { white } from './color';
 
+export function timeToString(time = Date.now()) {
+  const date = new Date(time);
+  const todayUTC = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+  return todayUTC.toISOString().split('T')[0];
+}
+
 export function getMetricMetaInfo(metric) {
   const info = {
     run: {
