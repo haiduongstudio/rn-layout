@@ -57,7 +57,10 @@ class Feed extends Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text> FeedScreen </Text>
+        <Button
+          title="Go to Detail Screen"
+          onPress={() => this.props.navigation.navigate('Detail')}
+        />
       </View>
     );
   }
@@ -83,16 +86,90 @@ class Setting extends Component {
   }
 }
 
+class Detail extends Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text> Detail </Text>
+      </View>
+    );
+  }
+}
+
+const FeedStack = createStackNavigator(
+  {
+    Feed: {
+      screen: Feed,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: 'Feed',
+        headerLeft: (
+          <Icon
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.openDrawer()}
+            name="md-menu"
+            size={30}
+          />
+        )
+      })
+    },
+    Detail: {
+      screen: Detail
+    }
+  },
+  {
+    defaultNavigationOptions: {
+      gesturesEnabled: false
+    }
+  }
+);
+
+const ProfileStack = createStackNavigator({
+  Profile: {
+    screen: Profile,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: 'Profile',
+      headerLeft: (
+        <Icon
+          style={{ paddingLeft: 10 }}
+          onPress={() => navigation.openDrawer()}
+          name="md-menu"
+          size={30}
+        />
+      )
+    })
+  }
+});
+
+const SettingStack = createStackNavigator({
+  Setting: {
+    screen: Setting,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: 'Setting',
+      headerLeft: (
+        <Icon
+          style={{ paddingLeft: 10 }}
+          onPress={() => navigation.openDrawer()}
+          name="md-menu"
+          size={30}
+        />
+      )
+    })
+  }
+});
+
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    Feed,
-    Profile,
-    Setting
+    FeedStack,
+    ProfileStack,
+    SettingStack
   },
   {
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state.routes[navigation.state.index];
-      return { headerTitle: routeName };
+      return {
+        header: null,
+        headerTitle: routeName
+      };
     }
   }
 );
