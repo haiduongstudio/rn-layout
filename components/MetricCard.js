@@ -20,7 +20,7 @@ const MetricCard = ({ date, metrics }) => {
             {getIcon()}
             <View>
               <Text style={{ fontSize: 20 }}>{displayName}</Text>
-              <Text style={{ fontSize: 16, color: gray }} />
+              <Text style={{ fontSize: 16, color: gray }}> {metrics[metric]} {unit}</Text>
             </View>
           </View>
         );

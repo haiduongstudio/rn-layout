@@ -11,7 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   getMetricMetaInfo,
   timeToString,
-  getDailyReminderValue
+  getDailyReminderValue,
+  clearLocalNotification,
+  setLocalNotification
 } from '../utils/helpers';
 import UdaciSlider from './UdaciSlider';
 import UdaciStepper from './UdaciStepper';
@@ -21,6 +23,7 @@ import { submitEntry, removeEntry } from '../utils/api';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
 import { white, purple } from '../utils/color';
+import { NavigationActions } from 'react-navigation';
 
 function SubmitBtn({ onPress }) {
   return (
@@ -91,11 +94,13 @@ class AddEntry extends Component {
     }));
 
     // Navigate to home
+    this.toHome();
 
     // Save to 'DB'
     submitEntry({ key, entry });
 
     // Clear local notification
+    clearLocalNotification().then(setLocalNotification);
   };
 
   reset = () => {
@@ -109,9 +114,18 @@ class AddEntry extends Component {
     );
 
     // Route to home
+    this.toHome();
 
     // Update 'DB'
     removeEntry(key);
+  };
+
+  toHome = () => {
+    this.props.navigation.dispatch(
+      NavigationActions.back({
+        key: 'AddEntry'
+      })
+    );
   };
 
   render() {
