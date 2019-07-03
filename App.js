@@ -1,13 +1,20 @@
 import React from 'react';
 import CounterComponent from './components/CounterComponent';
 
-import { createStore } from 'redux';
+// Redux
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
 import allReducers from './reducers';
 import CounterContainer from './containers/CounterContainer';
 
-let store = createStore(allReducers);
+// Redux saga
+import createSagaMiddleware from 'redux-saga';
+// Middleware
+const sagaMiddleware = createSagaMiddleware();
+import rootSaga from './sagas/rootSaga';
+
+let store = createStore(allReducers, applyMiddleware(sagaMiddleware));
 
 export default function App() {
   return (
@@ -16,3 +23,5 @@ export default function App() {
     </Provider>
   );
 }
+
+sagaMiddleware.run(rootSaga);
