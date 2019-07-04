@@ -1,19 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+// Redux
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+
+import allReducers from './reducers';
+import MovieContainer from './containers/MovieContainer';
+
+// Saga
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas/rootSaga';
+
+const sagaMiddleware = createSagaMiddleware();
+
+let store = createStore(allReducers, applyMiddleware(sagaMiddleware));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={store}>
+      <MovieContainer />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+sagaMiddleware.run(rootSaga);
